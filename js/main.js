@@ -1,3 +1,4 @@
+console.log("Script Loaded");
 // Initialize GLOBAL variables
 let selArt_ref = [];
 
