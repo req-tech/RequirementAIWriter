@@ -27,7 +27,7 @@ function onBodyLoad()
     });
 
     ro.observe(document.getElementById('button1')); //adjustHeight() is also called when the user changes the width of the main button (i.e., the width of the widget)
-    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
+    // adjustHeight(); //we update the height since we updated the UI with loadLanguage();
 
 }
 
@@ -47,7 +47,7 @@ function show_instructions() //standard code for the show instruction button
         instructions_button.innerHTML = getLangString('cs002');
     }
 
-    adjustHeight();
+    // adjustHeight();
 }
 
 function show_settings() //standard code for the show settings button
@@ -66,7 +66,7 @@ function show_settings() //standard code for the show settings button
         settings_button.innerHTML = getLangString('cs004');
     }
 
-    adjustHeight();
+    // adjustHeight();
 }
 
 function mainButton_onclick() 
@@ -102,7 +102,7 @@ function mainButton_onclick()
 function setContainerText(containerId, string)
 {
     document.getElementById(containerId).innerHTML = string;
-    adjustHeight();
+    // adjustHeight();
 }
 
 function printArray(array)
