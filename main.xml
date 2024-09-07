@@ -87,7 +87,7 @@
 						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
 					</div>
 
-					<button type="button" style="font-size:12px;" class="btn btn-danger" onclick="mainButton_onclick();" id="button1"><span id='str011'></span></button>
+					<button type="button" style="font-size:12px;" class="btn btn-danger" onclick="mainButton_onclick();" id="button1">Rewrite as User Story<span id='str011'></span></button>
 				</div>
 			</body>
 		</html>
