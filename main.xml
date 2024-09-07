@@ -48,13 +48,13 @@
 				     </tr> 
 				    </table>
 				<h1>Hello, World</h1>
-				<table style='margin-top: 5px;'> 
+				<table> 
 				     <tr> 
 				      <td style='text-align: center; font-size:12px;'>
 					Jeba Jee
 				      </td> 
 				     </tr> 
-				    </table>
+				</table>
 				<div class="d-grid gap-2 mx-2" style='margin-bottom: 3px;'>
 				
 					<table style='margin-top: 5px;'>
