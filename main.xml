@@ -15,12 +15,13 @@
 				<script type="text/javascript" src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/lang_en.js" charset="utf-8"></script>		
 	
 				<!-- Importing bootstrap and jQuery -->
-				<script src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/jquery-3.6.1.js"></script>
-				<link href="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/css/bootstrap.min.css" rel="stylesheet">
-				<script src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/bootstrap.bundle.min.js"></script>
+				<script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/jquery-3.6.1.js"></script>
+				<link href="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/css/bootstrap.min.css" rel="stylesheet">
+				<script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/bootstrap.bundle.min.js"></script>
 
-				<!-- Custom JS-code -->
+				<!-- Custom JS-code 
 				<script type="text/javascript" src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/main.js"></script>
+				-->			
 				<script>
 				let selArt_ref = [];
 				
