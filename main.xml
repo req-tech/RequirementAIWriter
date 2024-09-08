@@ -39,9 +39,9 @@
 				
 				function onBodyLoad() 
 				{
-				    <!-- const message = document.createElement('h1');
-				    message.textContent = "Hello World from js";
-				    document.body.appendChild(message); -->
+				    const message = document.createElement('h3');
+				    message.textContent = "AI Results";
+				    document.body.appendChild(message);
 				    
 				    loadLanguage(); //load the text according to the language file set in main.xml
 				
@@ -112,11 +112,12 @@
 						let analysisResult = await callOpenAIAPI(cleanText, apiKey);
 
 						// Display the analysis result
-						const message = document.createElement('h1');
-						message.textContent = "AI Analysis Result: " + analysisResult;
+						const message = document.createElement('p');
+						message.textContent = analysisResult;
 						document.body.appendChild(message);
-
+						adjustHeight();
 						alert(analysisResult);
+
 				    });
 				}
 				</script>
@@ -180,7 +181,7 @@
 						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
 					</div>
 
-					// Buttons
+					<!-- Buttons -->
 					<div>
 					    <button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
 					</div>
