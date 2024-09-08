@@ -39,9 +39,9 @@
 				
 				function onBodyLoad() 
 				{
-				    const message = document.createElement('h1');
+				    <!-- const message = document.createElement('h1');
 				    message.textContent = "Hello World from js";
-				    document.body.appendChild(message);
+				    document.body.appendChild(message); -->
 				    
 				    loadLanguage(); //load the text according to the language file set in main.xml
 				
@@ -73,7 +73,7 @@
 								model: 'gpt-4',
 								messages: [
 									{ role: 'system', content: 'You are a requirement quality analyzer.' },
-									{ role: 'user', content: `Analyze the quality of the following requirement: ${cleanText}` }
+									{ role: 'user', content: `Analyze the quality of the following requirement: ${cleanText} . Be very compact in your answer.` }
 								],
 								max_tokens: 500
 							}),
@@ -180,14 +180,16 @@
 						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
 					</div>
 
+					// Buttons
+					<div>
+					    <button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
+					</div>
 					<!-- Text box for entering OpenAI API key -->
 					<div>
 					    <label for="apiKeyInput" style="font-size:12px;">Enter your OpenAI API key:</label>
 					    <input type="text" id="apiKeyInput" style="width: 100%;" placeholder="API Key"/>
 					</div>
-					<div>
-					    <button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
-					</div>
+
 				</div>
 			</body>
 		</html>
