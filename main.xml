@@ -36,9 +36,14 @@
                 
                 function onBodyLoad() 
                 {
-                    const message = document.createElement('h3');
-                    message.textContent = "AI Results";
-                    document.body.appendChild(message);
+					const message = document.createElement('h3');
+					message.textContent = "AI Results";
+					document.body.appendChild(message);
+					
+					const resultText = document.createElement('p');
+					resultText.id = 'aiResultText';
+					resultText.textContent = "This is where the AI results will be displayed.";
+					document.body.appendChild(resultText);
                     
                     loadLanguage(); //load the text according to the language file set in main.xml
                     adjustHeight(); 
@@ -105,15 +110,15 @@
                     RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], async function(res) {
                         let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
                         let cleanText = stripHTML(primaryText);
-                        alert('Original Requirement Text: ' + cleanText);
+                        // alert('Original Requirement Text: ' + cleanText);
+						document.getElementById('aiResultText').textContent = "Processing...";
 
                         // Call OpenAI API for the appropriate prompt type
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
 
                         // Display the result
-                        const message = document.createElement('p');
-                        message.textContent = result;
-                        document.body.appendChild(message);
+						document.getElementById('aiResultText').textContent = result;
+
                         adjustHeight();
                         alert(result);
                     });
