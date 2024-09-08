@@ -45,11 +45,12 @@
 				    
 				    loadLanguage(); //load the text according to the language file set in main.xml
 				
-				    var ro = new ResizeObserver(entries => {
+				    <!-- var ro = new ResizeObserver(entries => {
 				        adjustHeight();
 				    });
 				
 				    ro.observe(document.getElementById('button1')); //adjustHeight() is also called when the user changes the width of the main button (i.e., the width of the widget)
+					 -->
 				    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
 				
 				}
