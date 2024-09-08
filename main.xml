@@ -53,9 +53,38 @@
 				    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
 				
 				}
+				
 				function stripHTML(html) {
 					let doc = new DOMParser().parseFromString(html, 'text/html');
 					return doc.body.textContent || "";
+				}
+
+				async function callOpenAIAPI(cleanText, apiKey) {
+					const endpoint = 'https://api.openai.com/v1/chat/completions';
+
+					try {
+						const response = await fetch(endpoint, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${apiKey}`,
+							},
+							body: JSON.stringify({
+								model: 'gpt-4',
+								messages: [
+									{ role: 'system', content: 'You are a requirement quality analyzer.' },
+									{ role: 'user', content: `Analyze the quality of the following requirement: ${cleanText}` }
+								],
+								max_tokens: 500
+							}),
+						});
+
+						const data = await response.json();
+						return data.choices[0].message.content;
+					} catch (error) {
+						console.error('Error calling OpenAI API:', error);
+						return 'Error analyzing requirement quality.';
+					}
 				}
 
 				function readArtefact() {
@@ -63,16 +92,32 @@
 				        alert('No text artifacts selected.');
 				        return;
 				    }
-						backup = [];
-						let primaryText = "";
-						RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
+
+				    const apiKey = document.getElementById('apiKeyInput').value; // Get the API key from the input field
+
+				    if (!apiKey) {
+				        alert('Please enter your OpenAI API key.');
+				        return;
+				    }
+
+					let primaryText = "";
+					
+					// Fetch artifact data
+					RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], async function(res) {
 						let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
 						let cleanText = stripHTML(primaryText);
-						alert(cleanText);
+						alert('Original Requirement Text: ' + cleanText);
+
+						// Call OpenAI API for requirement quality analysis
+						let analysisResult = await callOpenAIAPI(cleanText, apiKey);
+
+						// Display the analysis result
+						const message = document.createElement('h1');
+						message.textContent = "AI Analysis Result: " + analysisResult;
+						document.body.appendChild(message);
+
+						alert(analysisResult);
 				    });
-				    const message = document.createElement('h1');
-				    message.textContent = primaryText;
-				    document.body.appendChild(message);
 				}
 				</script>
 
@@ -141,7 +186,13 @@
 						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
 					</div>
 
-					<button type="button" style="font-size:12px;" onclick="readArtefact();">Rewrite as User Story</span></button>
+					<!-- Text box for entering OpenAI API key -->
+					<div>
+					    <label for="apiKeyInput" style="font-size:12px;">Enter your OpenAI API key:</label>
+					    <input type="text" id="apiKeyInput" style="width: 100%;" placeholder="API Key"/>
+					</div>
+
+					<button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
 				</div>
 			</body>
 		</html>
