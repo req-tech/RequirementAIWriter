@@ -63,6 +63,7 @@
 				    let primaryText = "";
 				    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
 				        let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
+					alert('Here');
 				    });
 				    const message = document.createElement('h1');
 				    message.textContent = primaryText;
