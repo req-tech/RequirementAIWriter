@@ -62,8 +62,10 @@
 				    backup = [];
 				    let primaryText = "";
 				    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
+					alert('Here1');
 				        let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
-					alert('Here');
+					alert('Here after');
+					alert(primaryText);
 				    });
 				    const message = document.createElement('h1');
 				    message.textContent = primaryText;
