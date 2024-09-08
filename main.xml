@@ -53,19 +53,22 @@
 				    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
 				
 				}
+				function stripHTML(html) {
+					let doc = new DOMParser().parseFromString(html, 'text/html');
+					return doc.body.textContent || "";
+				}
 
 				function readArtefact() {
 				    if (selArt_ref == undefined || selArt_ref.length == 0) {
 				        alert('No text artifacts selected.');
 				        return;
 				    }
-				    backup = [];
-				    let primaryText = "";
-				    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
-					alert('Here1');
-				        let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
-					alert('Here after');
-					alert(primaryText);
+						backup = [];
+						let primaryText = "";
+						RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
+						let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
+						let cleanText = stripHTML(primaryText);
+						alert(cleanText);
 				    });
 				    const message = document.createElement('h1');
 				    message.textContent = primaryText;
@@ -127,7 +130,7 @@
 						<hr style='padding: 0 !important; margin: 0 !important;'/>
 					</div>
 					
-					
+
 					<div style="font-size:12px; display: none;" id='settings_div'>
 						<b> <span id='str008'></span> </b> <span id='str009'>  </span>
 						<hr style='padding: 0 !important; margin: 0 !important;'/>
