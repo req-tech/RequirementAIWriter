@@ -1,200 +1,155 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module specificationVersion="1.3">
 <ModulePrefs title="Hello World v1.0" height="130" scrolling="true">
-	<Require feature="com.ibm.rdm.rm.api"/>
-	<Require feature="dynamic-height"/>
+    <Require feature="com.ibm.rdm.rm.api"/>
+    <Require feature="dynamic-height"/>
 </ModulePrefs>
 
 <Content type="html">
-	<![CDATA[
-		<html>
-			<head>
-				<!-- Language settings -->
-				<meta charset="utf-8">
-				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
-				<script type="text/javascript" src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/lang_en.js" charset="utf-8"></script>		
-	
-				<!-- Importing bootstrap and jQuery -->
-				<script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/jquery-3.6.1.js?cb=" + new Date().getTime()></script>
-				<link href="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/css/bootstrap.min.css" rel="stylesheet">
-				<script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/bootstrap.bundle.min.js"></script>
+    <![CDATA[
+        <html>
+            <head>
+                <!-- Language settings -->
+                <meta charset="utf-8">
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+                <script type="text/javascript" src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/lang_en.js" charset="utf-8"></script>        
+    
+                <!-- Importing bootstrap and jQuery -->
+                <script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/jquery-3.6.1.js?cb=" + new Date().getTime()></script>
+                <link href="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/css/bootstrap.min.css" rel="stylesheet">
+                <script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/bootstrap.bundle.min.js"></script>
 
-				<!-- Custom JS-code 
-				<script type="text/javascript" src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/main.js"></script>
-				-->			
-				<script>
-				let selArt_ref = [];
-				
-				RM.Event.subscribe(RM.Event.ARTIFACT_SELECTED, onSelection); // Use the RM library to deal with DNG
-				
-				function onSelection(artifacts) 
-				{
-				    selArt_ref = artifacts;
-				}
-				
-				function adjustHeight() //to recall each time we update the UI
-				{
-				    gadgets.window.adjustHeight();
-				}
-				
-				function onBodyLoad() 
-				{
-				    const message = document.createElement('h3');
-				    message.textContent = "AI Results";
-				    document.body.appendChild(message);
-				    
-				    loadLanguage(); //load the text according to the language file set in main.xml
-				
-				    <!-- var ro = new ResizeObserver(entries => {
-				        adjustHeight();
-				    });
-				
-				    ro.observe(document.getElementById('button1')); //adjustHeight() is also called when the user changes the width of the main button (i.e., the width of the widget)
-					 -->
-				    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
-				
-				}
-				
-				function stripHTML(html) {
-					let doc = new DOMParser().parseFromString(html, 'text/html');
-					return doc.body.textContent || "";
-				}
+                <script>
+                let selArt_ref = [];
+                
+                RM.Event.subscribe(RM.Event.ARTIFACT_SELECTED, onSelection); // Use the RM library to deal with DNG
+                
+                function onSelection(artifacts) 
+                {
+                    selArt_ref = artifacts;
+                }
+                
+                function adjustHeight() //to recall each time we update the UI
+                {
+                    gadgets.window.adjustHeight();
+                }
+                
+                function onBodyLoad() 
+                {
+                    const message = document.createElement('h3');
+                    message.textContent = "AI Results";
+                    document.body.appendChild(message);
+                    
+                    loadLanguage(); //load the text according to the language file set in main.xml
+                    adjustHeight(); 
+                }
+                
+                function stripHTML(html) {
+                    let doc = new DOMParser().parseFromString(html, 'text/html');
+                    return doc.body.textContent || "";
+                }
 
-				async function callOpenAIAPI(cleanText, apiKey) {
-					const endpoint = 'https://api.openai.com/v1/chat/completions';
+                async function callOpenAIAPI(cleanText, apiKey, promptType) {
+                    const endpoint = 'https://api.openai.com/v1/chat/completions';
 
-					try {
-						const response = await fetch(endpoint, {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-								'Authorization': `Bearer ${apiKey}`,
-							},
-							body: JSON.stringify({
-								model: 'gpt-4',
-								messages: [
-									{ role: 'system', content: 'You are a requirement quality analyzer.' },
-									{ role: 'user', content: `Analyze the quality of the following requirement: ${cleanText} . Be very compact in your answer.` }
-								],
-								max_tokens: 750
-							}),
-						});
+                    let prompt = '';
+                    if (promptType === 'quality') {
+                        prompt = `Analyze the quality of the following requirement: ${cleanText} . Be very compact in your answer.`;
+                    } else if (promptType === 'basel') {
+                        prompt = `Convert the following requirement to Basel IV style requirement: ${cleanText}`;
+                    } else if (promptType === 'testcase') {
+                        prompt = `Generate a test case for the following requirement: ${cleanText}`;
+                    }
 
-						const data = await response.json();
-						return data.choices[0].message.content;
-					} catch (error) {
-						console.error('Error calling OpenAI API:', error);
-						return 'Error analyzing requirement quality.';
-					}
-				}
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${apiKey}`,
+                            },
+                            body: JSON.stringify({
+                                model: 'gpt-4',
+                                messages: [
+                                    { role: 'system', content: 'You are an expert in requirement analysis and test generation.' },
+                                    { role: 'user', content: prompt }
+                                ],
+                                max_tokens: 750
+                            }),
+                        });
 
-				function readArtefact() {
-				    if (selArt_ref == undefined || selArt_ref.length == 0) {
-				        alert('No text artifacts selected.');
-				        return;
-				    }
+                        const data = await response.json();
+                        return data.choices[0].message.content;
+                    } catch (error) {
+                        console.error('Error calling OpenAI API:', error);
+                        return 'Error analyzing the requirement.';
+                    }
+                }
 
-				    const apiKey = document.getElementById('apiKeyInput').value; // Get the API key from the input field
+                function readArtefact(promptType) {
+                    if (selArt_ref == undefined || selArt_ref.length == 0) {
+                        alert('No text artifacts selected.');
+                        return;
+                    }
 
-				    if (!apiKey) {
-				        alert('Please enter your OpenAI API key.');
-				        return;
-				    }
+                    const apiKey = document.getElementById('apiKeyInput').value; // Get the API key from the input field
 
-					let primaryText = "";
-					
-					// Fetch artifact data
-					RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], async function(res) {
-						let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
-						let cleanText = stripHTML(primaryText);
-						alert('Original Requirement Text: ' + cleanText);
+                    if (!apiKey) {
+                        alert('Please enter your OpenAI API key.');
+                        return;
+                    }
 
-						// Call OpenAI API for requirement quality analysis
-						let analysisResult = await callOpenAIAPI(cleanText, apiKey);
+                    let primaryText = "";
+                    
+                    // Fetch artifact data
+                    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], async function(res) {
+                        let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
+                        let cleanText = stripHTML(primaryText);
+                        alert('Original Requirement Text: ' + cleanText);
 
-						// Display the analysis result
-						const message = document.createElement('p');
-						message.textContent = analysisResult;
-						document.body.appendChild(message);
-						adjustHeight();
-						alert(analysisResult);
+                        // Call OpenAI API for the appropriate prompt type
+                        let result = await callOpenAIAPI(cleanText, apiKey, promptType);
 
-				    });
-				}
-				</script>
+                        // Display the result
+                        const message = document.createElement('p');
+                        message.textContent = result;
+                        document.body.appendChild(message);
+                        adjustHeight();
+                        alert(result);
+                    });
+                }
+                </script>
 
-				<style>
-					#container::-webkit-scrollbar {
-  						-webkit-appearance: none;
-  						width: 7px;
-					}
+                <style>
+                    #container::-webkit-scrollbar {
+                        -webkit-appearance: none;
+                        width: 7px;
+                    }
 
-					#container::-webkit-scrollbar-thumb {
-  						border-radius: 4px;
-  						background-color: rgba(0, 0, 0, .5);
-  						-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-					}
-				</style>
-			</head>
-			<body onload='onBodyLoad();'>
-				    <div class="d-grid gap-2 mx-2" style='margin-bottom: 3px;'> 
-				    <table style='margin-top: 5px;'> 
-				     <tr> 
-				      <td style='text-align: center; font-size:12px;'>
-				      <a onclick='show_instructions();' style='color:#00F; text-decoration: underline;' id='instructions_button'>
-				      <span id='str001'></span></a></td> <td style='text-align: center; font-size:12px;'>
-				      <a onclick='show_settings();' style='color:#00F; text-decoration: underline;' id='settings_button'>
-				      <span id='str002'></span></a>
-				      </td> 
-				     </tr> 
-				    </table>
+                    #container::-webkit-scrollbar-thumb {
+                        border-radius: 4px;
+                        background-color: rgba(0, 0, 0, .5);
+                        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+                    }
+                </style>
+            </head>
+            <body onload='onBodyLoad();'>
+                <div class="d-grid gap-2 mx-2" style='margin-bottom: 3px;'> 
+                    <!-- Buttons -->
+                    <div>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('quality');">Analyze Requirement Quality</button>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('basel');">Convert to Basel IV Style</button>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('testcase');">Generate Test Case</button>
+                    </div>
 
-				<div class="d-grid gap-2 mx-2" style='margin-bottom: 3px;'>
-				
-					<!-- <table style='margin-top: 5px;'>
-						<tr>
-							<td style='text-align: center; font-size:12px;'><a onclick='show_instructions();' style='color:#00F; text-decoration: underline;' id='instructions_button'><span id='str001'></span></a></td>
-							<td style='text-align: center; font-size:12px;'><a onclick='show_settings();' style='color:#00F; text-decoration: underline;' id='settings_button'><span id='str002'></span></a></td>
-						</tr>
-					</table> -->
-
-					<hr style='padding: 0 !important; margin: 0 !important;'/>
-
-					<div style="font-size:12px; display: none;" id='instructions_div'>
-						<b><span id='str003'></span> </b> <span id='str004'></span> <br/>
-						<ol>
-							<li> <span id='str005'></span> </li>
-							<li> <span id='str006'></span> </li>
-							<li> <span id='str007'></span></li>
-						</ol>
-
-						<hr style='padding: 0 !important; margin: 0 !important;'/>
-					</div>
-					
-
-					<div style="font-size:12px; display: none;" id='settings_div'>
-						<b> <span id='str008'></span> </b> <span id='str009'>  </span>
-						<hr style='padding: 0 !important; margin: 0 !important;'/>
-					</div>
-
-					<div style="font-size:12px;">
-						<b><span id='str010' hidden></span></b>
-						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
-					</div>
-
-					<!-- Buttons -->
-					<div>
-					    <button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
-					</div>
-					<!-- Text box for entering OpenAI API key -->
-					<div>
-					    <label for="apiKeyInput" style="font-size:12px;">Enter your OpenAI API key:</label>
-					    <input type="text" id="apiKeyInput" style="width: 100%;" placeholder="API Key"/>
-					</div>
-
-				</div>
-			</body>
-		</html>
-	]]>
+                    <!-- Text box for entering OpenAI API key -->
+                    <div>
+                        <label for="apiKeyInput" style="font-size:12px;">Enter your OpenAI API key:</label>
+                        <input type="text" id="apiKeyInput" style="width: 100%;" placeholder="API Key"/>
+                    </div>
+                </div>
+            </body>
+        </html>
+    ]]>
 </Content>
 </Module>
