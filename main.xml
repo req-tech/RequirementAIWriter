@@ -12,7 +12,7 @@
 				<!-- Language settings -->
 				<meta charset="utf-8">
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
-				<script type="text/javascript" src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/lang_en.js" charset="utf-8"></script>		
+				<script type="text/javascript" src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/lang_en.js" charset="utf-8"></script>		
 	
 				<!-- Importing bootstrap and jQuery -->
 				<script src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/jquery-3.6.1.js"></script>
