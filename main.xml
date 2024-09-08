@@ -185,8 +185,9 @@
 					    <label for="apiKeyInput" style="font-size:12px;">Enter your OpenAI API key:</label>
 					    <input type="text" id="apiKeyInput" style="width: 100%;" placeholder="API Key"/>
 					</div>
-
-					<button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
+					<div>
+					    <button type="button" style="font-size:12px;" onclick="readArtefact();">Analyze Requirement Quality</span></button>
+					</div>
 				</div>
 			</body>
 		</html>
