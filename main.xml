@@ -53,6 +53,21 @@
 				    adjustHeight(); //we update the height since we updated the UI with loadLanguage();
 				
 				}
+
+				function readArtefact() {
+				    if (selArt_ref == undefined || selArt_ref.length == 0) {
+				        alert('No text artifacts selected.');
+				        return;
+				    }
+				    backup = [];
+				    let primaryText = "";
+				    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], function(res) {
+				        let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
+				    });
+				    const message = document.createElement('h1');
+				    message.textContent = primaryText;
+				    document.body.appendChild(message);
+				}
 				</script>
 
 				<style>
@@ -80,7 +95,6 @@
 				      </td> 
 				     </tr> 
 				    </table>
-				<h1>Hello, World</h1>
 				<table> 
 				     <tr> 
 				      <td style='text-align: center; font-size:12px;'>
@@ -120,7 +134,7 @@
 						<div style="overflow-y: scroll; max-height:80px; background-color:#EEE;" id='container'></div>
 					</div>
 
-					<button type="button" style="font-size:12px;" class="btn btn-danger" onclick="mainButton_onclick();" id="button1">Rewrite as User Story<span id='str011'></span></button>
+					<button type="button" style="font-size:12px;" class="btn btn-danger" onclick="readArtefact();" id="button1">Rewrite as User Story</span></button>
 				</div>
 			</body>
 		</html>
