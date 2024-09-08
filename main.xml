@@ -15,7 +15,7 @@
 				<script type="text/javascript" src="lang_en.js" charset="utf-8"></script>		
 	
 				<!-- Importing bootstrap and jQuery -->
-				<script src="js/jquery-3.6.1.js"></script>
+				<script src="https://raw.githubusercontent.com/req-tech/HelloWorldWidget/main/js/jquery-3.6.1.js"></script>
 				<link href="css/bootstrap.min.css" rel="stylesheet">
 				<script src="js/bootstrap.bundle.min.js"></script>
 
