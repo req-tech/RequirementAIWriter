@@ -61,7 +61,7 @@
                     if (promptType === 'quality') {
                         prompt = `Analyze the quality of the following requirement: ${cleanText} . Be very compact in your answer.`;
                     } else if (promptType === 'basel') {
-                        prompt = `Convert the following requirement to Basel IV style requirement: ${cleanText}`;
+                        prompt = `Convert the following requirement to FDA style requirement: ${cleanText}`;
                     } else if (promptType === 'testcase') {
                         prompt = `Generate a test case for the following requirement: ${cleanText}`;
                     }
@@ -143,7 +143,7 @@
                     <!-- Buttons -->
                     <div>
                         <button type="button" style="font-size:12px;" onclick="readArtefact('quality');">Analyze Requirement Quality</button>
-                        <button type="button" style="font-size:12px;" onclick="readArtefact('basel');">Convert to Basel IV Style</button>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('basel');">Convert to FDA Style</button>
                         <button type="button" style="font-size:12px;" onclick="readArtefact('testcase');">Generate Test Case</button>
                     </div>
 
