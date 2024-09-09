@@ -37,7 +37,7 @@
                 function onBodyLoad() 
                 {
 					const message = document.createElement('h3');
-					message.textContent = "AI Results";
+					message.textContent = "AI Results:";
 					document.body.appendChild(message);
 					
 					const resultText = document.createElement('p');
