@@ -120,7 +120,7 @@
 						document.getElementById('aiResultText').textContent = result;
 
                         adjustHeight();
-                        alert(result);
+                        <!-- alert(result); -->
                     });
                 }
                 </script>
