@@ -66,7 +66,7 @@
 						4. **Lacking INCOSE Features:** Identify and list the **INCOSE requirement quality features** that were lacking in the original requirement (e.g., clarity, verifiability, feasibility, traceability, etc.).
 						5. **Explanation of Deficiencies:** Provide an **explanation** of the primary deficiency in the original requirement, and outline what was improved in the revised version to meet INCOSE standards.
 
-						The analysis should be structured as follows:
+						The analysis should be structured as follows. Note ¤ characters are used for formatting so don't skip them.:
 						---
 						¤**Original Requirement:**
 						¤- [Insert original requirement]
@@ -145,13 +145,13 @@
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
 						let formattedResult = result.replaceAll('¤**', '<br><strong>');
 						formattedResult = formattedResult.replaceAll('**', '</strong>');
-						formattedResult = formattedResult.replaceAll('¤-', '<br>');
+						formattedResult = formattedResult.replaceAll('¤-', '<br>-');
 
                         // Display the result
 						document.getElementById('aiResultText').innerHTML = formattedResult;
 
                         adjustHeight();
-                        alert(formattedResult);
+                        alert(formattedResult, '<br>', result);
                     });
                 }
                 </script>
