@@ -40,9 +40,9 @@
 					message.textContent = "AI Results:";
 					document.body.appendChild(message);
 					
-					const resultText = document.createElement('p');
+					const resultText = document.createElement('div');
 					resultText.id = 'aiResultText';
-					resultText.textContent = "This is where the AI results will be displayed.";
+					resultText.innerHTML = "This is where the AI results will be displayed.";
 					document.body.appendChild(resultText);
                     
                     loadLanguage(); //load the text according to the language file set in main.xml
@@ -139,20 +139,14 @@
                         let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
                         let cleanText = stripHTML(primaryText);
                         // alert('Original Requirement Text: ' + cleanText);
-						document.getElementById('aiResultText').textContent = "Processing...";
+						document.getElementById('aiResultText').innerHTML = "Processing...";
 
                         // Call OpenAI API for the appropriate prompt type
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
 						let formattedResult = result.replaceAll('**', '<br>');
 
                         // Display the result
-						// document.getElementById('aiResultText').textContent = formattedResult;
-
-						// Create a container to display the formatted text
-						let container = document.createElement('div');
-
-						// Set the formatted text as HTML content
-						container.innerHTML = formattedResult;
+						document.getElementById('aiResultText').innerHTML = formattedResult;
 
                         adjustHeight();
                         <!-- alert(result); -->
