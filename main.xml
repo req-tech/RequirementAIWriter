@@ -151,7 +151,7 @@
 						document.getElementById('aiResultText').innerHTML = formattedResult;
 
                         adjustHeight();
-                        alert(formattedResult, '<br>', result);
+                        <!-- alert(formattedResult, '<br>', result); -->
                     });
                 }
                 </script>
