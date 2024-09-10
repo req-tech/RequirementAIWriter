@@ -143,7 +143,7 @@
 
                         // Call OpenAI API for the appropriate prompt type
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
-						let formattedResult = result.replaceAll('**', '<br><strong>');
+						let formattedResult = result.replaceAll('¤**', '<br><strong>');
 						formattedResult = formattedResult.replaceAll('**', '</strong>');
 
                         // Display the result
