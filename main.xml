@@ -91,7 +91,18 @@
                     } else if (promptType === 'basel') {
                         prompt = `Convert the following requirement to FDA style requirement: ${cleanText}`;
                     } else if (promptType === 'testcase') {
-                        prompt = `Generate a test case for the following requirement: ${cleanText}`;
+                        prompt = `Generate a test case for the following requirement. 
+						The Test Case should be structured as follows. Note ¤ characters are used for formatting so don't skip them.:
+						---
+						¤**Test Case Title:**
+						[Test purpose and description]
+
+						¤**Test Steps**
+						¤- [Action, Data, Expected Result]
+
+						Original Requirement:
+						
+						: ${cleanText}`;
                     }
 
                     try {
