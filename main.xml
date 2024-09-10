@@ -143,9 +143,10 @@
 
                         // Call OpenAI API for the appropriate prompt type
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
+						let formattedResult = result.replaceAll('**', '\n');
 
                         // Display the result
-						document.getElementById('aiResultText').textContent = result;
+						document.getElementById('aiResultText').textContent = formattedResult;
 
                         adjustHeight();
                         <!-- alert(result); -->
@@ -170,7 +171,7 @@
                 <div class="d-grid gap-2 mx-2" style='margin-bottom: 3px;'> 
                     <!-- Buttons -->
                     <div>
-                        <button type="button" style="font-size:12px;" onclick="readArtefact('quality');">Analyze Requirement Quality</button>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('quality');">Analyze Requirement</button>
                         <button type="button" style="font-size:12px;" onclick="readArtefact('basel');">Convert to FDA Style</button>
                         <button type="button" style="font-size:12px;" onclick="readArtefact('testcase');">Generate Test Case</button>
                     </div>
