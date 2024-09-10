@@ -68,20 +68,20 @@
 
 						The analysis should be structured as follows:
 						---
-						**Original Requirement:**
+						**<b>Original Requirement:</b>**
 						- [Insert original requirement]
 
-						**Quality Score (INCOSE Standard):** [Score]
+						**<b>Quality Score (INCOSE Standard):</b>** [Score]
 
-						**Better Formulation:**
+						**<b>Better Formulation:</b>**
 						- [Revised requirement]
 
-						**Revised Requirement Score:** [Score]
+						**<b>Revised Requirement Score:</b>** [Score]
 
-						**Lacking INCOSE Features:**
+						**<b>Lacking INCOSE Features:</b>**
 						- [List of missing features]
 
-						**Explanation of Deficiency and Improvement:**
+						**<b>Explanation of Deficiency and Improvement:</b>**
 						- [Detailed explanation of what was deficient in the original requirement and how the revised version addresses it]
 												
 						Original Requirement: 
