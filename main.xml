@@ -69,20 +69,20 @@
 						The analysis should be structured as follows:
 						---
 						¤**Original Requirement:**
-						- [Insert original requirement]
+						¤- [Insert original requirement]
 
 						¤**Quality Score (INCOSE Standard):** [Score]
 
 						¤**<strong>Better Formulation:</strong>**
-						- [Revised requirement]
+						¤- [Revised requirement]
 
 						¤**<strong>Revised Requirement Score:</strong>** [Score]
 
 						¤**<strong>Lacking INCOSE Features:</strong>**
-						- [List of missing features]
+						¤- [List of missing features]
 
 						¤**<strong>Explanation of Deficiency and Improvement:</strong>**
-						- [Detailed explanation of what was deficient in the original requirement and how the revised version addresses it]
+						¤- [Detailed explanation of what was deficient in the original requirement and how the revised version addresses it]
 												
 						Original Requirement: 
 						
@@ -145,6 +145,7 @@
                         let result = await callOpenAIAPI(cleanText, apiKey, promptType);
 						let formattedResult = result.replaceAll('¤**', '<br><strong>');
 						formattedResult = formattedResult.replaceAll('**', '</strong>');
+						formattedResult = formattedResult.replaceAll('¤-', '<br>');
 
                         // Display the result
 						document.getElementById('aiResultText').innerHTML = formattedResult;
