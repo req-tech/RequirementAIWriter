@@ -146,7 +146,13 @@
 						let formattedResult = result.replaceAll('**', '<br>');
 
                         // Display the result
-						document.getElementById('aiResultText').textContent = formattedResult;
+						// document.getElementById('aiResultText').textContent = formattedResult;
+
+						// Create a container to display the formatted text
+						let container = document.createElement('div');
+
+						// Set the formatted text as HTML content
+						container.innerHTML = formattedResult;
 
                         adjustHeight();
                         <!-- alert(result); -->
