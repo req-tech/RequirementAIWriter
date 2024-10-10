@@ -19,6 +19,34 @@
                 <link href="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/css/bootstrap.min.css" rel="stylesheet">
                 <script src="https://dev.neohost.se/ibm-extensions/FormatManager1.3b4/js/bootstrap.bundle.min.js"></script>
 
+                <style>
+                    #container::-webkit-scrollbar {
+                        -webkit-appearance: none;
+                        width: 7px;
+                    }
+
+                    #container::-webkit-scrollbar-thumb {
+                        border-radius: 4px;
+                        background-color: rgba(0, 0, 0, .5);
+                        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+                    }
+                    table {
+                        font-family: arial, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+
+                        td, th {
+                        border: 1px solid #dddddd;
+                        text-align: left;
+                        padding: 4px;
+                        }
+
+                        tr:nth-child(even) {
+                        background-color: #dddddd;
+                    }
+                </style>
+	
                 <script>
                 let selArt_ref = [];
                 
@@ -91,16 +119,10 @@
                     } else if (promptType === 'basel') {
                         prompt = `Convert the following requirement to FDA style requirement: ${cleanText}`;
                     } else if (promptType === 'testcase') {
-                        prompt = `Generate a test case for the following requirement. 
-						The Test Case should be structured as follows. Note ¤ characters are used for formatting so don't skip them.:
-						---
-						¤**Test Case Title:**
-						[Test purpose and description]
-
-						¤**Test Steps**
-						¤- [Action, Data, Expected Result]
-
-						Original Requirement:
+                        prompt = `Generate a test case for the following requirement.\nThe Test Case should be structured as follows. 
+				Note ¤ characters are used for formatting, don't skip them.:\n---\n
+				¤**Test Case Title:**\n Test purpose and description \n\n
+				¤**Test Steps:** \n (in a HTML table) with columns:Action, Data, Expected Result.
 						
 						: ${cleanText}`;
                     }
