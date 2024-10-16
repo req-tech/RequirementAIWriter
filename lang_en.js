@@ -43,7 +43,13 @@ lang_json = `{
     {
       "id": "str011",
       "text": "Print Text Artifacts Titles"
+    },
+    {
+      "id": "str012",
+      "text": "OpenAI API key:"
     }
+
+
   ],
   "codeStrings":
       {
