@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module specificationVersion="1.3">
-<ModulePrefs title="AI Assistant" height="130" scrolling="true">
+<ModulePrefs title="Requirement AI Analyzer" height="130" scrolling="true">
     <Require feature="com.ibm.rdm.rm.api"/>
     <Require feature="dynamic-height"/>
 </ModulePrefs>
@@ -20,7 +20,7 @@
 				<script src="js/bootstrap.bundle.min.js"></script>
 
                 <!-- Custom JS-code -->
-				<script src="./js/main.js" charset="utf-8"></script>
+				<script src="./js/main.js" charset="utf-8"></script> 
 
                 <!-- Include the env.js file for OPENAI API TOKEN -->
                 <script src="env.js"></script>
@@ -96,13 +96,14 @@
 
                     <!-- Buttons -->
                     <div>
-                        <button type="button" style="font-size:12px;" onclick="readArtefact('incose');">INCOSE Analysis</button>
-                        <button type="button" style="font-size:12px;" onclick="readArtefact('fda');">Convert to FDA Style</button>
-                        <button type="button" style="font-size:12px;" onclick="readArtefact('testcase');">Generate Test Case</button>
+                        <button type="button" style="font-size:12px;" onclick="readArtefact('incose');">Analyze Requirement</button>
+                        <button type="button" style="font-size:12px;" onclick="updateArtifact();">Update Primary Text</button>
+                        <button type="button" style="font-size:12px;" onclick="undoUpdate();">Undo</button>
                     </div>
 
                 </div>
-
+                <input type="hidden" id="revisedRequirement" />
+                <input type="hidden" id="originalRequirement" />
                 
             </body>
         </html>

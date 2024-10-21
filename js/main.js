@@ -40,12 +40,7 @@ function setContainerText(containerId, string) {
 
 async function onBodyLoad() {
 
-    // const response = await fetch('js/prompts.json');
-    // const prompts = await response.json();
-    // alert(prompts);
-
     const message = document.createElement('h3');
-    message.textContent = "AI Results:";
     document.body.appendChild(message);
 
     const resultText = document.createElement('div');
@@ -57,10 +52,6 @@ async function onBodyLoad() {
     adjustHeight();
 }
 
-function stripHTML(html) {
-    let doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
-}
 
 // Function to load JSON file
 async function loadPrompts() {
@@ -73,22 +64,21 @@ async function loadPrompts() {
 async function getPrompt(cleanText, promptType) {
     const prompts = await loadPrompts();
     const template = prompts[promptType];
+    
     if (template) {
         return template.replace('${cleanText}', cleanText);
     }
     return '';
 }
 
-async function callOpenAIAPI(cleanText, promptType) {
+async function callOpenAIAPI(title, cleanText, promptType) {
     const endpoint = 'https://api.openai.com/v1/chat/completions';
     const apiKey = getApiKey();
 
     if (!apiKey) return;
 
     const prompt = await getPrompt(cleanText, promptType);
-    // const prompt = jsaonPrompt + '<<< '
     console.log(prompt);
-    // alert(prompt);
 
     try {
         const response = await fetch(endpoint, {
@@ -102,7 +92,7 @@ async function callOpenAIAPI(cleanText, promptType) {
                 messages: [
                     { role: 'system', content: 'You are an expert in requirement analysis and test generation.' },
                     { role: 'user', content: prompt },
-                    { role: 'user', content: cleanText }
+                    { role: 'user', content: "Requirement Title: "+ title + "PrimaryText: " + cleanText }
                 ],
                 max_tokens: 1000
             }),
@@ -204,28 +194,132 @@ function checkCookieExists(cookieName) {
     return false;
 }
 
+// New function to update the artifact
+// Function to update the artifact with the revised requirement
+async function updateArtifact() {
+    if (!selArt_ref || selArt_ref.length === 0) {
+        alert('No text artifacts selected.');
+        return;
+    }
+
+    const revisedRequirement = document.getElementById('revisedRequirement').value;
+    if (!revisedRequirement) {
+        alert('Revised Requirement is empty.');
+        return;
+    }
+
+    try {
+        // Create an instance of RM.ArtifactAttributes
+        let artifactAttributes = new RM.ArtifactAttributes();
+        let attributeValues = new RM.AttributeValues();
+
+        // Set the artifact reference
+        artifactAttributes.ref = selArt_ref[0];
+
+        // Set the attribute values (in this case, Primary Text)
+        attributeValues["http://www.ibm.com/xmlns/rdm/types/PrimaryText"] = revisedRequirement;
+        artifactAttributes.values = attributeValues;
+
+        // Log for debugging
+        console.log('Updating artifact with revised requirement:', revisedRequirement);
+        console.log('Selected Artifact Reference:', selArt_ref[0]);
+        console.log('Artifact Attributes:', artifactAttributes);
+
+        // Set attributes using the new format
+        await RM.Data.setAttributes(artifactAttributes, function (result) {
+            if (result.code === RM.OperationResult.OPERATION_OK) {
+                console.log('Artifact updated successfully.');
+            } else {
+                console.error('Failed to update artifact:', result);
+                alert('Failed to update artifact. Please check the console for more details.');
+            }
+        });
+    } catch (error) {
+        console.error('An error occurred while updating the artifact:', error);
+    }
+}
+
+
+
+// Modify the readArtefact function to set the revised requirement in the hidden input field
 async function readArtefact(promptType) {
     if (!selArt_ref || selArt_ref.length === 0) {
         alert('No text artifacts selected.');
         return;
     }
 
-    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT], async function (res) {
+    RM.Data.getAttributes(selArt_ref, [RM.Data.Attributes.PRIMARY_TEXT, RM.Data.Attributes.NAME], async function (res) {
         let primaryText = res.data[0].values["http://www.ibm.com/xmlns/rdm/types/PrimaryText"];
-        let cleanText = stripHTML(primaryText);
-        document.getElementById('aiResultText').textContent = "Processing...";
+        let title = res.data[0].values["http://purl.org/dc/terms/title"];
 
-        let result = await callOpenAIAPI(cleanText, promptType);
+        document.getElementById('aiResultText').textContent = "Processing...";
+        // Set the original requirement in the hidden input field for Undo
+        document.getElementById('originalRequirement').value = primaryText;
+
+        let result = await callOpenAIAPI(title, primaryText, promptType);
+        let formattedResult = '';
+        let plainResult = '';
         if (result) {
-            let formattedResult = result.replaceAll('¤**', '<br><strong>');
+            formattedResult = result.replaceAll('¤**', '<br><strong>');
+            plainResult = formattedResult.replaceAll('¤**', '');
             formattedResult = formattedResult.replaceAll('**', '</strong>');
+            plainResult = plainResult.replaceAll('**', '');
             formattedResult = formattedResult.replaceAll('¤-', '<br>-');
+            plainResult = plainResult.replaceAll('¤-', '');
 
             document.getElementById('aiResultText').innerHTML = formattedResult;
         } else {
             document.getElementById('aiResultText').textContent = "An error occurred while processing the requirement.";
         }
 
+        const match = plainResult.match(/Revised Requirement:\s*([\s\S]*?)\s*Revised Requirement Score:/i);
+
+        if (match && match[1]) {
+            const revisedRequirement = match[1].trim().replace(/<\/?[^>]+(>|$)/g, "");
+            document.getElementById('revisedRequirement').value = revisedRequirement;
+        } else {
+            alert('Revised Requirement not found');
+        }
+
         adjustHeight();
     });
 }
+// Undo the update
+async function undoUpdate() {
+    if (!selArt_ref || selArt_ref.length === 0) {
+        alert('No text artifacts selected.');
+        return;
+    }
+
+    const originalRequirement = document.getElementById('originalRequirement').value;
+    if (!originalRequirement) {
+        alert('No original value to revert to.');
+        return;
+    }
+
+    try {
+        // Create an instance of RM.ArtifactAttributes
+        let artifactAttributes = new RM.ArtifactAttributes();
+        let attributeValues = new RM.AttributeValues();
+
+        // Set the artifact reference
+        artifactAttributes.ref = selArt_ref[0];
+
+        // Set the original attribute value
+        attributeValues["http://www.ibm.com/xmlns/rdm/types/PrimaryText"] = originalRequirement;
+        artifactAttributes.values = attributeValues;
+
+        // Set attributes using the new format
+        await RM.Data.setAttributes(artifactAttributes, function (result) {
+            if (result.code === RM.OperationResult.OPERATION_OK) {
+                console.log('Artifact reverted successfully.');
+            } else {
+                console.error('Failed to revert artifact:', result);
+                alert('Failed to revert artifact. Please check the console for more details.');
+            }
+        });
+    } catch (error) {
+        console.error('An error occurred while reverting the artifact:', error);
+    }
+}
+
