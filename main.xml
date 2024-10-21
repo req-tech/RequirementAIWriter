@@ -20,10 +20,10 @@
 				<script src="js/bootstrap.bundle.min.js"></script>
 
                 <!-- Custom JS-code -->
-				<script src="./js/main.js" charset="utf-8"></script> 
+				<script type="text/javascript" src="./js/main.js" charset="utf-8"></script> 
 
                 <!-- Include the env.js file for OPENAI API TOKEN -->
-                <script src="env.js"></script>
+                <script type="text/javascript" src="env.js"></script>
 
 
 

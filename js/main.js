@@ -78,7 +78,7 @@ async function callOpenAIAPI(title, cleanText, promptType) {
     if (!apiKey) return;
 
     const prompt = await getPrompt(cleanText, promptType);
-    console.log(prompt);
+    // console.log(prompt);
 
     try {
         const response = await fetch(endpoint, {
@@ -136,7 +136,7 @@ function getApiKey() {
         
         if (fieldApiKey) {
             OpenAIapiKey = fieldApiKey;
-            console.log('Using API key from Field.', OpenAIapiKey);
+            console.log('Using API key from Field.');
         }
     }
 
@@ -220,18 +220,13 @@ async function updateArtifact() {
         attributeValues["http://www.ibm.com/xmlns/rdm/types/PrimaryText"] = revisedRequirement;
         artifactAttributes.values = attributeValues;
 
-        // Log for debugging
-        console.log('Updating artifact with revised requirement:', revisedRequirement);
-        console.log('Selected Artifact Reference:', selArt_ref[0]);
-        console.log('Artifact Attributes:', artifactAttributes);
-
         // Set attributes using the new format
         await RM.Data.setAttributes(artifactAttributes, function (result) {
             if (result.code === RM.OperationResult.OPERATION_OK) {
                 console.log('Artifact updated successfully.');
             } else {
                 console.error('Failed to update artifact:', result);
-                alert('Failed to update artifact. Please check the console for more details.');
+                alert('Failed to update artifact. Do you have required permission and license?.');
             }
         });
     } catch (error) {
