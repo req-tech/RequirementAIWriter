@@ -46,6 +46,7 @@ async function onBodyLoad() {
     const resultText = document.createElement('div');
     resultText.id = 'aiResultText';
     resultText.textContent = "This is where the AI results will be displayed.";
+    resultText.style.fontSize = '12px'; // Set the text size to 12px
     document.body.appendChild(resultText);
 
     loadLanguage(); // load the text according to the language file set in main.xml
@@ -117,7 +118,8 @@ function getApiKey() {
     }
 
     let OpenAIapiKey = "";
-    if (env.apiKey) {
+    // Check if the API key is set in the server environment and the value is not 'unset'
+    if (env.apiKey && env.apiKey !== 'unset') {
         OpenAIapiKey = env.apiKey;
         console.log('Using API key from server.');
     } else {

@@ -12,7 +12,7 @@
                 <!-- Language settings -->
                 <meta charset="utf-8">
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
-				<script type="text/javascript" src="lang_en.js" charset="utf-8"></script>       
+				<script type="text/javascript" src="./lang_en.js" charset="utf-8"></script>       
     
 				<!-- Importing bootstrap and jQuery -->
 				<script src="js/jquery-3.6.1.js"></script>
@@ -100,7 +100,7 @@
                         <button type="button" style="font-size:12px;" onclick="updateArtifact();">Update Primary Text</button>
                         <button type="button" style="font-size:12px;" onclick="undoUpdate();">Undo</button>
                     </div>
-
+                    
                 </div>
                 <input type="hidden" id="revisedRequirement" />
                 <input type="hidden" id="originalRequirement" />

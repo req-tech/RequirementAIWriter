@@ -14,23 +14,23 @@ lang_json = `{
     },
     {
       "id": "str004",
-      "text": "This widget is designed to be a template for new Celeris widgets. It contains most of the basic code you might need to develop a widget. Follow the instructions below to use this widget with ease and confidence."
+      "text": "This widget analyzes Requirement and propose new simple, but precise content using INCOSE guidelines. Analysis is done using OpenAI API. To use this widget, follow the steps below:"
     },
     {
       "id": "str005",
-      "text": "Open the module."
+      "text": "Set your OpenAI API key in the settings menu in case your admin has not set Company API Key on the server."
     },
     {
       "id": "str006",
-      "text": "Select the text artifacts."
+      "text": "Open the module or collection and select one text artifact and press analyse."
     },
     {
       "id": "str007",
-      "text": "Click the button to print the title of the selected text artifacts."
+      "text": "Click the Update Primary Text button to replace proposed content to selected text artifacts. Undo restore original content"
     },
     {
       "id": "str008",
-      "text": "Settings: "
+      "text": "Settings:"
     },
     {
       "id": "str009",
